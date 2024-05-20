@@ -9,9 +9,10 @@
 HINSTANCE hInst;                                // текущий экземпляр
 WCHAR szTitle[MAX_LOADSTRING] = L"Резисторный калькулятор";                  // Текст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING] = L"ResistorCalcClass";            // имя класса главного окна
-HWND hComboBand1, hComboBand2, hComboBand3, hComboBand4, hComboBand5, hButton, hResultText;
-HWND hLabelBand1, hLabelBand2, hLabelBand3, hLabelBand4, hLabelBand5;
+HWND hComboBand1, hComboBand2, hComboBand3, hComboBand4, hComboBand5, hButton, hResultText, hFourBandRadio, hFiveBandRadio;
+HWND hLabelBand1, hLabelBand2, hLabelBand3, hLabelBand4, hLabelBand5, hLabelPower, hComboPower;
 bool isFiveBand = false;
+const int NUM_COLORS = 12;
 
 // Отправить объявления функций, включенных в этот модуль кода:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -21,6 +22,7 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 std::vector<std::wstring> colors = {L"Black", L"Brown", L"Red", L"Orange", L"Yellow", L"Green", L"Blue", L"Violet", L"Gray", L"White", L"Gold", L"Silver" };
 std::vector<int> colorVal = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -2 };
+std::vector<int> forbiddenColors = { 0, 9, 3, 4};
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -125,6 +127,9 @@ void FillComboBox(HWND hComboBox)
     SendMessage(hComboBox, CB_SETCURSEL, 0, 0); // первый элемент в 0 - Black
 }
 
+
+
+
 //
 //  ФУНКЦИЯ: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
@@ -142,11 +147,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
         {
             // radio buttons
-            HWND hFourBandRadio = CreateWindowW(L"BUTTON", L"4 кольцевой", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON,
+            hFourBandRadio = CreateWindowW(L"BUTTON", L"4 кольцевой", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON,
                 400, 10, 120, 30, hWnd, (HMENU)2, hInst, nullptr);
             SendMessage(hFourBandRadio, BM_SETCHECK, BST_CHECKED, 0);
 
-            HWND hFiveBandRadio = CreateWindowW(L"BUTTON", L"5 кольцевой", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON,
+            hFiveBandRadio = CreateWindowW(L"BUTTON", L"5 кольцевой", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON,
                 400, 40, 120, 30, hWnd, (HMENU)3, hInst, nullptr);
 
             // comboboxes & labels
@@ -182,14 +187,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 150, 130, 150, 200, hWnd, nullptr, hInst, nullptr);
             FillComboBox(hComboBand5);
             
+            // мощность
+            hLabelPower = CreateWindowW(L"STATIC", L"Мощность (Вт):", WS_VISIBLE | WS_CHILD,
+                10, 160, 100, 20, hWnd, nullptr, hInst, nullptr);
+            hComboPower = CreateWindowW(L"COMBOBOX", nullptr, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE,
+                150, 160, 150, 200, hWnd, nullptr, hInst, nullptr);
 
             // button for calculate
             hButton = CreateWindowW(L"BUTTON", L"Рассчитать", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-                10, 160, 150, 30, hWnd, (HMENU)1, hInst, nullptr);
+                10, 200, 150, 30, hWnd, (HMENU)1, hInst, nullptr);
 
             // result
             hResultText = CreateWindowW(L"STATIC", L"", WS_VISIBLE | WS_CHILD,
-                10, 200, 350, 20, hWnd, nullptr, hInst, nullptr);
+                10, 240, 350, 40, hWnd, nullptr, hInst, nullptr);
+
+
+            
+            SendMessage(hComboPower, CB_ADDSTRING, 0, (LPARAM)L"0.125");
+            SendMessage(hComboPower, CB_ADDSTRING, 0, (LPARAM)L"0.25");
+            SendMessage(hComboPower, CB_ADDSTRING, 0, (LPARAM)L"0.5");
+            SendMessage(hComboPower, CB_ADDSTRING, 0, (LPARAM)L"1");
+            SendMessage(hComboPower, CB_ADDSTRING, 0, (LPARAM)L"2");
+            SendMessage(hComboPower, CB_ADDSTRING, 0, (LPARAM)L"5");
+            SendMessage(hComboPower, CB_SETCURSEL, 0, 0); //
         }
     case WM_COMMAND:
         {
@@ -219,7 +239,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 int band3 = colorVal[SendMessage(hComboBand3, CB_GETCURSEL, 0, 0)];
                 int band4 = colorVal[SendMessage(hComboBand4, CB_GETCURSEL, 0, 0)];
                 int band5 = colorVal[SendMessage(hComboBand5, CB_GETCURSEL, 0, 0)];
-
+                double power = std::stod("0." + std::to_string(SendMessage(hComboPower, CB_GETCURSEL, 0, 0)));
                 double resistance = 0.0; // сопротивление резистора
 
                 if (isFiveBand)
@@ -227,7 +247,40 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 else
                     resistance = (band1 * 10 + band2) * pow(10, band3); // значение двух цифр * множитель
 
+                double voltage = sqrt(power * resistance);
+
                 std::wstring result = L"Сопротивление: " + std::to_wstring(resistance) + L"Ом";
+                std::wstring tolerance;
+                switch (band5) {
+                case 1:
+                    tolerance = L"1%"; // Коричневый
+                    break;
+                case 2:
+                    tolerance = L"2%"; // Красный
+                    break;
+                case 3:
+                    tolerance = L"0.5%"; // Зеленый
+                    break;
+                case 4:
+                    tolerance = L"0.25%"; // Синий
+                    break;
+                case 5:
+                    tolerance = L"0.1%"; // Фиолетовый
+                    break;
+                case 6:
+                    tolerance = L"0.05%"; // Серый
+                    break;
+                case -1:
+                    tolerance = L"5%"; // Золото
+                    break;
+                case -2:
+                    tolerance = L"10%"; // Серебро
+                    break;
+                default:
+                    tolerance = L"±" + std::to_wstring(band5) + L"%";
+                    break;
+                }
+                result += L"\nТочность: " + tolerance;
                 SetWindowText(hResultText, result.c_str());
                 
             }
