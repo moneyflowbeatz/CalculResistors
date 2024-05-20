@@ -10,6 +10,7 @@ HINSTANCE hInst;                                // текущий экземпл
 WCHAR szTitle[MAX_LOADSTRING] = L"Резисторный калькулятор";                  // Текст строки заголовка
 WCHAR szWindowClass[MAX_LOADSTRING] = L"ResistorCalcClass";            // имя класса главного окна
 HWND hComboBand1, hComboBand2, hComboBand3, hComboBand4, hComboBand5, hButton, hResultText;
+HWND hLabelBand1, hLabelBand2, hLabelBand3, hLabelBand4, hLabelBand5;
 bool isFiveBand = false;
 
 // Отправить объявления функций, включенных в этот модуль кода:
@@ -18,7 +19,7 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-std::vector<std::wstring> colors = {L"Silver", L"Gold", L"Black", L"Brown", L"Red", L"Orange", L"Yellow", L"Green", L"Blue", L"Violet", L"Gray", L"White"};
+std::vector<std::wstring> colors = {L"Black", L"Brown", L"Red", L"Orange", L"Yellow", L"Green", L"Blue", L"Violet", L"Gray", L"White", L"Gold", L"Silver" };
 std::vector<int> colorVal = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -2 };
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -140,35 +141,77 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
     case WM_CREATE:
         {
+            // radio buttons
+            HWND hFourBandRadio = CreateWindowW(L"BUTTON", L"4 кольцевой", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON,
+                400, 10, 120, 30, hWnd, (HMENU)2, hInst, nullptr);
+            SendMessage(hFourBandRadio, BM_SETCHECK, BST_CHECKED, 0);
+
+            HWND hFiveBandRadio = CreateWindowW(L"BUTTON", L"5 кольцевой", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON,
+                400, 40, 120, 30, hWnd, (HMENU)3, hInst, nullptr);
+
+            // comboboxes & labels
+            hLabelBand1 = CreateWindowW(L"STATIC", L"Кольцо 1 (номинал): ", WS_VISIBLE | WS_CHILD,
+                10, 10, 150, 20, hWnd, nullptr, hInst, nullptr);
             hComboBand1 = CreateWindowW(L"COMBOBOX", nullptr, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE,
-                10, 10, 150, 200, hWnd, nullptr, hInst, nullptr);
+                150, 10, 150, 200, hWnd, nullptr, hInst, nullptr);
             FillComboBox(hComboBand1);
 
+            hLabelBand2 = CreateWindowW(L"STATIC", L"Кольцо 2 (номинал): ", WS_VISIBLE | WS_CHILD,
+                10, 40, 150, 20, hWnd, nullptr, hInst, nullptr);
             hComboBand2 = CreateWindowW(L"COMBOBOX", nullptr, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE,
-                10, 40, 150, 200, hWnd, nullptr, hInst, nullptr);
+                150, 40, 150, 200, hWnd, nullptr, hInst, nullptr);
             FillComboBox(hComboBand2);
 
+            hLabelBand3 = CreateWindowW(L"STATIC", L"Кольцо 3 (номинал): ", WS_VISIBLE | WS_CHILD,
+                10, 70, 150, 20, hWnd, nullptr, hInst, nullptr);
             hComboBand3 = CreateWindowW(L"COMBOBOX", nullptr, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE,
-                10, 70, 150, 200, hWnd, nullptr, hInst, nullptr);
+                150, 70, 150, 200, hWnd, nullptr, hInst, nullptr);
             FillComboBox(hComboBand3);
+            ShowWindow(hComboBand3, SW_HIDE); // по умолчанию скрыл
+            ShowWindow(hLabelBand3, SW_HIDE); // по умолчанию скрыл
 
+            hLabelBand4 = CreateWindowW(L"STATIC", L"Кольцо (множитель): ", WS_VISIBLE | WS_CHILD,
+                10, 100, 150, 20, hWnd, nullptr, hInst, nullptr);
             hComboBand4 = CreateWindowW(L"COMBOBOX", nullptr, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE,
-                10, 100, 150, 200, hWnd, nullptr, hInst, nullptr);
+                150, 100, 150, 200, hWnd, nullptr, hInst, nullptr);
             FillComboBox(hComboBand4);
 
+            hLabelBand5 = CreateWindowW(L"STATIC", L"Кольцо (точность): ", WS_VISIBLE | WS_CHILD,
+                10, 130, 150, 20, hWnd, nullptr, hInst, nullptr);
             hComboBand5 = CreateWindowW(L"COMBOBOX", nullptr, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE,
-                10, 130, 150, 200, hWnd, nullptr, hInst, nullptr);
+                150, 130, 150, 200, hWnd, nullptr, hInst, nullptr);
             FillComboBox(hComboBand5);
-            ShowWindow(hComboBand5, SW_HIDE); // по умолчанию скрыл
+            
 
-            hButton = CreateWindowW(L"BUTTON", L"Calculate", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+            // button for calculate
+            hButton = CreateWindowW(L"BUTTON", L"Рассчитать", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
                 10, 160, 150, 30, hWnd, (HMENU)1, hInst, nullptr);
 
+            // result
             hResultText = CreateWindowW(L"STATIC", L"", WS_VISIBLE | WS_CHILD,
                 10, 200, 350, 20, hWnd, nullptr, hInst, nullptr);
         }
     case WM_COMMAND:
         {
+            if (LOWORD(wParam) == 2 || LOWORD(wParam) == 3) {
+                if (LOWORD(wParam) == 2) {
+                    isFiveBand == false;
+                    ShowWindow(hLabelBand3, SW_HIDE);
+                    ShowWindow(hComboBand3, SW_HIDE);
+
+                    
+                }
+                else
+                {
+                    isFiveBand == true;
+                    ShowWindow(hLabelBand3, SW_SHOW);
+                    ShowWindow(hComboBand3, SW_SHOW);
+
+                    
+                    
+                }
+
+            }
             if (LOWORD(wParam) == 1)
             {
                 int band1 = colorVal[SendMessage(hComboBand1, CB_GETCURSEL, 0, 0)];

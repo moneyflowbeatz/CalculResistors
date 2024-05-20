@@ -1,2 +1,4 @@
 ﻿  CalculResistors.cpp
-  CalculResistors.vcxproj -> D:\Dev\Projects\CalculResistors\x64\Debug\CalculResistors.exe
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(198,32): warning C4553: "==": результат выражения не используется; вы хотели использовать "="?
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(206,32): warning C4553: "==": результат выражения не используется; вы хотели использовать "="?
+  CalculResistors.vcxproj -> D:\Dev\Projects\CalculateResistors\x64\Debug\CalculResistors.exe
