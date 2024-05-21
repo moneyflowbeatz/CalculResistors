@@ -1,2 +1,4 @@
 ﻿  CalculResistors.cpp
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(270,20): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(271,15): warning C4244: инициализация: преобразование "LRESULT" в "int", возможна потеря данных
   CalculResistors.vcxproj -> D:\Dev\Projects\CalculateResistors\x64\Debug\CalculResistors.exe
