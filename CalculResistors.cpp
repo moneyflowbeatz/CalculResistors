@@ -22,7 +22,6 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 std::vector<std::wstring> colors = {L"Black", L"Brown", L"Red", L"Orange", L"Yellow", L"Green", L"Blue", L"Violet", L"Gray", L"White", L"Gold", L"Silver" };
 std::vector<int> colorVal = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -2 };
-std::vector<int> forbiddenColors = { 0, 9, 3, 4};
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -127,6 +126,47 @@ void FillComboBox(HWND hComboBox)
     SendMessage(hComboBox, CB_SETCURSEL, 0, 0); // первый элемент в 0 - Black
 }
 
+void FillComboBox_accuracy(HWND hComboBox)
+{
+    std::vector<int> forbiddenColors = { 0, 3, 4, 9 }; // Индексы черного, оранжевого, желтого и белого цветов
+
+    for (size_t i = 0; i < colors.size(); ++i)
+    {
+        if (std::find(forbiddenColors.begin(), forbiddenColors.end(), i) == forbiddenColors.end())
+        {
+            SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)colors[i].c_str());
+        }
+    }
+    SendMessage(hComboBox, CB_SETCURSEL, 0, 0); // первый элемент в 0
+}
+
+void FillComboBox_1m(HWND hComboBox)
+{
+    std::vector<int> forbiddenColors = { 0, -1, -2 }; 
+
+    for (size_t i = 0; i < colors.size(); ++i)
+    {
+        if (std::find(forbiddenColors.begin(), forbiddenColors.end(), i) == forbiddenColors.end())
+        {
+            SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)colors[i].c_str());
+        }
+    }
+    SendMessage(hComboBox, CB_SETCURSEL, 0, 0); // первый элемент в 0
+}
+
+void FillComboBox_2_3m(HWND hComboBox)
+{
+    std::vector<int> forbiddenColors = { -1, -2 };
+
+    for (size_t i = 0; i < colors.size(); ++i)
+    {
+        if (std::find(forbiddenColors.begin(), forbiddenColors.end(), i) == forbiddenColors.end())
+        {
+            SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)colors[i].c_str());
+        }
+    }
+    SendMessage(hComboBox, CB_SETCURSEL, 0, 0); // первый элемент в 0
+}
 
 
 
@@ -159,19 +199,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 10, 10, 150, 20, hWnd, nullptr, hInst, nullptr);
             hComboBand1 = CreateWindowW(L"COMBOBOX", nullptr, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE,
                 150, 10, 150, 200, hWnd, nullptr, hInst, nullptr);
-            FillComboBox(hComboBand1);
+            FillComboBox_1m(hComboBand1);
 
             hLabelBand2 = CreateWindowW(L"STATIC", L"Кольцо 2 (номинал): ", WS_VISIBLE | WS_CHILD,
                 10, 40, 150, 20, hWnd, nullptr, hInst, nullptr);
             hComboBand2 = CreateWindowW(L"COMBOBOX", nullptr, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE,
                 150, 40, 150, 200, hWnd, nullptr, hInst, nullptr);
-            FillComboBox(hComboBand2);
+            FillComboBox_2_3m(hComboBand2);
 
             hLabelBand3 = CreateWindowW(L"STATIC", L"Кольцо 3 (номинал): ", WS_VISIBLE | WS_CHILD,
                 10, 70, 150, 20, hWnd, nullptr, hInst, nullptr);
             hComboBand3 = CreateWindowW(L"COMBOBOX", nullptr, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE,
                 150, 70, 150, 200, hWnd, nullptr, hInst, nullptr);
-            FillComboBox(hComboBand3);
+            FillComboBox_2_3m(hComboBand3);
             ShowWindow(hComboBand3, SW_HIDE); // по умолчанию скрыл
             ShowWindow(hLabelBand3, SW_HIDE); // по умолчанию скрыл
 
@@ -185,7 +225,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 10, 130, 150, 20, hWnd, nullptr, hInst, nullptr);
             hComboBand5 = CreateWindowW(L"COMBOBOX", nullptr, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE,
                 150, 130, 150, 200, hWnd, nullptr, hInst, nullptr);
-            FillComboBox(hComboBand5);
+            FillComboBox_accuracy(hComboBand5);
             
             // мощность
             hLabelPower = CreateWindowW(L"STATIC", L"Мощность (Вт):", WS_VISIBLE | WS_CHILD,
@@ -215,7 +255,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             if (LOWORD(wParam) == 2 || LOWORD(wParam) == 3) {
                 if (LOWORD(wParam) == 2) {
-                    isFiveBand == false;
+                    isFiveBand = false;
                     ShowWindow(hLabelBand3, SW_HIDE);
                     ShowWindow(hComboBand3, SW_HIDE);
 
@@ -223,7 +263,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 }
                 else
                 {
-                    isFiveBand == true;
+                    isFiveBand = true;
                     ShowWindow(hLabelBand3, SW_SHOW);
                     ShowWindow(hComboBand3, SW_SHOW);
 
@@ -240,40 +280,44 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 int band4 = colorVal[SendMessage(hComboBand4, CB_GETCURSEL, 0, 0)];
                 int band5 = colorVal[SendMessage(hComboBand5, CB_GETCURSEL, 0, 0)];
                 double power = std::stod("0." + std::to_string(SendMessage(hComboPower, CB_GETCURSEL, 0, 0)));
-                double resistance = 0.0; // сопротивление резистора
+                double resistance = 0.0; // Сопротивление резистора
 
-                if (isFiveBand)
-                    resistance = (band1 * 100 + band2 * 10 + band3) * pow(10, band4); // значение трех цифр * множитель
-                else
-                    resistance = (band1 * 10 + band2) * pow(10, band3); // значение двух цифр * множитель
+                if (isFiveBand) {
+                    resistance = (band1 * 100 + band2 * 10 + band3) * pow(10, band4); // Значение трех цифр * множитель
+                }
+                else {
+                    resistance = (band1 * 10 + band2) * pow(10, band3); // Значение двух цифр * множитель
+                }
+
+                // Округление сопротивления до 1 знака после запятой
+                resistance = round(resistance * 10) / 10.0;
 
                 double voltage = sqrt(power * resistance);
-
-                std::wstring result = L"Сопротивление: " + std::to_wstring(resistance) + L"Ом";
+                std::wstring result = L"Сопротивление: " + std::to_wstring(resistance) + L" Ом";
                 std::wstring tolerance;
                 switch (band5) {
-                case 1:
+                case 0:
                     tolerance = L"1%"; // Коричневый
                     break;
-                case 2:
+                case 1:
                     tolerance = L"2%"; // Красный
                     break;
-                case 3:
+                case 2:
                     tolerance = L"0.5%"; // Зеленый
                     break;
-                case 4:
+                case 3:
                     tolerance = L"0.25%"; // Синий
                     break;
-                case 5:
+                case 4:
                     tolerance = L"0.1%"; // Фиолетовый
                     break;
-                case 6:
+                case 5:
                     tolerance = L"0.05%"; // Серый
                     break;
-                case -1:
+                case 6:
                     tolerance = L"5%"; // Золото
                     break;
-                case -2:
+                case 7:
                     tolerance = L"10%"; // Серебро
                     break;
                 default:
