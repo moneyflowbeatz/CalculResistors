@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|solutionrelative:CalculResistors.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|D:\\Dev\\Projects\\CalculateResistors\\Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|solutionrelative:Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|solutionrelative:CalculResistors.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|D:\\Dev\\Projects\\CalculateResistors\\Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|solutionrelative:Resource.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,20 +30,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Resource.h",
               "DocumentMoniker": "D:\\Dev\\Projects\\CalculateResistors\\Resource.h",
               "RelativeDocumentMoniker": "Resource.h",
               "ToolTip": "D:\\Dev\\Projects\\CalculateResistors\\Resource.h",
               "RelativeToolTip": "Resource.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAIwBsAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-05-20T06:27:47.489Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "CalculResistors.h",
               "DocumentMoniker": "D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.h",
               "RelativeDocumentMoniker": "CalculResistors.h",
@@ -62,7 +62,7 @@
               "RelativeDocumentMoniker": "CalculResistors.cpp",
               "ToolTip": "D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.cpp",
               "RelativeToolTip": "CalculResistors.cpp",
-              "ViewState": "AQIAAF4BAAAAAAAAAAAIwLcBAAABAAAA",
+              "ViewState": "AQIAADYCAAAAAAAAAAAAAGQCAAAfAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-05-20T06:13:14.522Z",
               "EditorCaption": ""

@@ -15,6 +15,17 @@
 #define IDC_MYICON				2
 #ifndef IDC_STATIC
 #define IDC_STATIC				-1
+
+#define ID_FOURBANDRADIO 101
+#define ID_FIVEBANDRADIO 102
+#define IDC_COMBO1 103
+#define IDC_COMBO2 104
+#define IDC_COMBO3 105
+#define IDC_COMBO4 106
+#define IDC_COMBO5 107
+#define IDC_BUTTON 108
+#define ID_RESULT_TEXT 109
+
 #endif
 // Следующие стандартные значения для новых объектов
 //

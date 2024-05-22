@@ -20,8 +20,59 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-std::vector<std::wstring> colors = {L"Black", L"Brown", L"Red", L"Orange", L"Yellow", L"Green", L"Blue", L"Violet", L"Gray", L"White", L"Gold", L"Silver" };
+std::vector<std::wstring> colours = {L"Black", L"Brown", L"Red", L"Orange", L"Yellow", L"Green", L"Blue", L"Violet", L"Gray", L"White", L"Gold", L"Silver" };
 std::vector<int> colorVal = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -2 };
+
+std::vector<COLORREF> colors = {
+    RGB(0, 0, 0),         // Black
+    RGB(139, 69, 19),     // Brown
+    RGB(255, 0, 0),       // Red
+    RGB(255, 165, 0),     // Orange
+    RGB(255, 255, 0),     // Yellow
+    RGB(0, 128, 0),       // Green
+    RGB(0, 0, 255),       // Blue
+    RGB(128, 0, 128),     // Violet
+    RGB(128, 128, 128),   // Gray
+    RGB(255, 255, 255),   // White
+    RGB(255, 215, 0),     // Gold
+    RGB(192, 192, 192)    // Silver
+};
+
+std::vector<COLORREF> colors_2 = {
+    RGB(139, 69, 19),     // Brown
+    RGB(255, 0, 0),       // Red
+    RGB(255, 165, 0),     // Orange
+    RGB(255, 255, 0),     // Yellow
+    RGB(0, 128, 0),       // Green
+    RGB(0, 0, 255),       // Blue
+    RGB(128, 0, 128),     // Violet
+    RGB(128, 128, 128),   // Gray
+    RGB(255, 255, 255),   // White
+};
+
+std::vector<COLORREF> colors_3 = {
+    RGB(139, 69, 19),     // Brown
+    RGB(255, 0, 0),       // Red
+    RGB(0, 128, 0),       // Green
+    RGB(0, 0, 255),       // Blue
+    RGB(128, 0, 128),     // Violet
+    RGB(128, 128, 128),   // Gray
+    RGB(255, 215, 0),     // Gold
+    RGB(192, 192, 192)    // Silver
+};
+
+class ResistorBand {
+public:
+    ResistorBand(COLORREF color) : color(color) {}
+    void Draw(HDC hdc, int x, int y, int width, int height) const {
+        HBRUSH hBrush = CreateSolidBrush(color);
+        RECT rect = { x, y, x + width, y + height };
+        FillRect(hdc, &rect, hBrush);
+        DeleteObject(hBrush);
+    }
+private:
+    COLORREF color;
+};
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -182,59 +233,59 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 
 
-LRESULT CALLBACK ComboBoxProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
-{
-    switch (message)
-    {
-    case WM_DRAWITEM:
-        if (wParam == (WPARAM)0)
-        {
-            LPDRAWITEMSTRUCT pdis = (LPDRAWITEMSTRUCT)lParam;
-            if (pdis->CtlType == ODT_COMBOBOX)
-            {
-                HDC hdc = pdis->hDC;
-                RECT rect = pdis->rcItem;
+//LRESULT CALLBACK ComboBoxProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
+//{
+//    switch (message)
+//    {
+//    case WM_DRAWITEM:
+//        if (wParam == (WPARAM)0)
+//        {
+//            LPDRAWITEMSTRUCT pdis = (LPDRAWITEMSTRUCT)lParam;
+//            if (pdis->CtlType == ODT_COMBOBOX)
+//            {
+//                HDC hdc = pdis->hDC;
+//                RECT rect = pdis->rcItem;
+//
+//                // Цвет фона и текста
+//                int index = (int)pdis->itemID;
+//                if (index >= 0 && index < colors.size())
+//                {
+//                    if (pdis->itemState & ODS_SELECTED)
+//                    {
+//                        SetBkColor(hdc, RGB(0, 120, 215));
+//                        SetTextColor(hdc, RGB(255, 255, 255));
+//                    }
+//                    else
+//                    {
+//                        SetBkColor(hdc, RGB(255, 255, 255));
+//                        SetTextColor(hdc, RGB(0, 0, 0));
+//                    }
+//
+//                    FillRect(hdc, &rect, (HBRUSH)(COLOR_WINDOW + 1));
+//                    DrawText(hdc, colours[index].c_str(), -1, &rect, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
+//                }
+//                return TRUE;
+//            }
+//        }
+//        break;
+//
+//    case WM_DESTROY:
+//        RemoveWindowSubclass(hWnd, ComboBoxProc, uIdSubclass);
+//        break;
+//    }
+//
+//    return DefSubclassProc(hWnd, message, wParam, lParam);
+//}
 
-                // Цвет фона и текста
-                int index = (int)pdis->itemID;
-                if (index >= 0 && index < colors.size())
-                {
-                    if (pdis->itemState & ODS_SELECTED)
-                    {
-                        SetBkColor(hdc, RGB(0, 120, 215));
-                        SetTextColor(hdc, RGB(255, 255, 255));
-                    }
-                    else
-                    {
-                        SetBkColor(hdc, RGB(255, 255, 255));
-                        SetTextColor(hdc, RGB(0, 0, 0));
-                    }
-
-                    FillRect(hdc, &rect, (HBRUSH)(COLOR_WINDOW + 1));
-                    DrawText(hdc, colors[index].c_str(), -1, &rect, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
-                }
-                return TRUE;
-            }
-        }
-        break;
-
-    case WM_DESTROY:
-        RemoveWindowSubclass(hWnd, ComboBoxProc, uIdSubclass);
-        break;
-    }
-
-    return DefSubclassProc(hWnd, message, wParam, lParam);
-}
-
-void SetComboBoxColor(HWND hComboBox)
-{
-    SetWindowSubclass(hComboBox, ComboBoxProc, 0, 0);
-}
+//void SetComboBoxColor(HWND hComboBox)
+//{
+//    SetWindowSubclass(hComboBox, ComboBoxProc, 0, 0);
+//}
 
 
 void FillComboBox(HWND hComboBox)
 {
-    for (const auto& color : colors)
+    for (const auto& color : colours)
     {
         SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)color.c_str());
     }
@@ -246,11 +297,11 @@ void FillComboBox_accuracy(HWND hComboBox)
 {
     std::vector<int> forbiddenColors = { 0, 3, 4, 9 }; // Индексы черного, оранжевого, желтого и белого цветов
 
-    for (size_t i = 0; i < colors.size(); ++i)
+    for (size_t i = 0; i < colours.size(); ++i)
     {
         if (std::find(forbiddenColors.begin(), forbiddenColors.end(), i) == forbiddenColors.end())
         {
-            SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)colors[i].c_str());
+            SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)colours[i].c_str());
         }
     }
     SendMessage(hComboBox, CB_SETCURSEL, 0, 0); // первый элемент в 0
@@ -261,11 +312,11 @@ void FillComboBox_1m(HWND hComboBox)
 {
     std::vector<int> forbiddenColors = { 0, 10, 11 }; 
 
-    for (size_t i = 0; i < colors.size(); ++i)
+    for (size_t i = 0; i < colours.size(); ++i)
     {
         if (std::find(forbiddenColors.begin(), forbiddenColors.end(), i) == forbiddenColors.end())
         {
-            SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)colors[i].c_str());
+            SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)colours[i].c_str());
         }
     }
     SendMessage(hComboBox, CB_SETCURSEL, 0, 0); // первый элемент в 0
@@ -276,15 +327,15 @@ void FillComboBox_2_3m(HWND hComboBox)
 {
     std::vector<int> forbiddenColors = { 10, 11 };
 
-    for (size_t i = 0; i < colors.size(); ++i)
+    for (size_t i = 0; i < colours.size(); ++i)
     {
         if (std::find(forbiddenColors.begin(), forbiddenColors.end(), i) == forbiddenColors.end())
         {
-            SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)colors[i].c_str());
+            SendMessage(hComboBox, CB_ADDSTRING, 0, (LPARAM)colours[i].c_str());
         }
     }
     SendMessage(hComboBox, CB_SETCURSEL, 0, 0); // первый элемент в 0
-    SetComboBoxColor(hComboBox);
+    
 }
 
 
@@ -333,15 +384,10 @@ void RecalculateResistance()
         break;
     }
 
-    int resistance = (val1 * 10 + val2) * multiplier;
-    if (isFiveBand)
-    {
-        resistance = (val1 * 100 + val2 * 10 + val3) * pow(10, multiplier);
-    }
-    else
-    {
-        resistance = (val1 * 10 + val2) * pow(10, multiplier);
-    }
+    
+    double resistance = isFiveBand
+        ? (val1 * 100 + val2 * 10 + val3) * std::pow(10, multiplier)
+        : (val1 * 10 + val2) * std::pow(10, multiplier);
 
     std::wstring result = L"Сопротивление: " + std::to_wstring(resistance) + L" Ом ± " + tolerance;
     SetWindowText(hResultText, result.c_str());
@@ -353,81 +399,59 @@ void RecalculateResistance()
     InvalidateRect(hComboBand5, NULL, TRUE);
 }
 
-
-
-void DrawResistor(HDC hdc, RECT& rect)
-{
-    int width = rect.right - rect.left;
-    int height = rect.bottom - rect.top;
-    int resistorWidth = width / 3;
-    int resistorHeight = height / 8;
-    int startX = (width - resistorWidth) / 2;
-    int startY = (height - resistorHeight) / 2;
-
-    // Рисуем резистор
-    Rectangle(hdc, startX, startY, startX + resistorWidth, startY + resistorHeight);
-
-    // Рисуем полосы
-    int numBands = isFiveBand ? 5 : 4;
-    int bandWidth = resistorWidth / (numBands + 1);
-    int bandHeight = resistorHeight;
-
-    HBRUSH hBrush;
-    for (int i = 0; i < numBands; ++i)
-    {
-        int colorIndex;
-        switch (i)
-        {
-        case 0:
-            colorIndex = SendMessage(hComboBand1, CB_GETCURSEL, 0, 0);
-            break;
-        case 1:
-            colorIndex = SendMessage(hComboBand2, CB_GETCURSEL, 0, 0);
-            break;
-        case 2:
-            colorIndex = isFiveBand ? SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) : SendMessage(hComboBand4, CB_GETCURSEL, 0, 0);
-            break;
-        case 3:
-            colorIndex = SendMessage(hComboBand4, CB_GETCURSEL, 0, 0);
-            break;
-        case 4:
-            colorIndex = SendMessage(hComboBand5, CB_GETCURSEL, 0, 0);
-            break;
-        default:
-            colorIndex = 0;
-            break;
-        }
-
-        COLORREF color;
-        switch (colorIndex)
-        {
-        case 0: color = RGB(0, 0, 0); break;              // Черный
-        case 1: color = RGB(139, 69, 19); break;          // Коричневый
-        case 2: color = RGB(255, 0, 0); break;            // Красный
-        case 3: color = RGB(255, 165, 0); break;          // Оранжевый
-        case 4: color = RGB(255, 255, 0); break;          // Желтый
-        case 5: color = RGB(0, 128, 0); break;            // Зеленый
-        case 6: color = RGB(0, 0, 255); break;            // Синий
-        case 7: color = RGB(238, 130, 238); break;        // Фиолетовый
-        case 8: color = RGB(128, 128, 128); break;        // Серый
-        case 9: color = RGB(255, 255, 255); break;        // Белый
-        case 10: color = RGB(255, 215, 0); break;         // Золотой
-        case 11: color = RGB(192, 192, 192); break;       // Серебряный
-        default: color = RGB(0, 0, 0); break;             // Черный по умолчанию
-        }
-
-        hBrush = CreateSolidBrush(color);
-        SelectObject(hdc, hBrush);
-
-        RECT bandRect;
-        bandRect.left = startX + (i + 1) * bandWidth - (bandWidth / 2);
-        bandRect.top = startY;
-        bandRect.right = bandRect.left + bandWidth;
-        bandRect.bottom = startY + bandHeight;
-
-        FillRect(hdc, &bandRect, hBrush);
-        DeleteObject(hBrush);
+void DrawResistor(HDC hdc, const std::vector<ResistorBand>& bands, int x, int y, int bandWidth, int bandHeight, int spacing) {
+    for (size_t i = 0; i < bands.size(); ++i) {
+        bands[i].Draw(hdc, x + i * (bandWidth + spacing), y, bandWidth, bandHeight);
     }
+}
+
+void DrawResistor(HDC hdc)
+{
+    int index1 = (SendMessage(hComboBand1, CB_GETCURSEL, 0, 0) < colors_2.size()) ? SendMessage(hComboBand1, CB_GETCURSEL, 0, 0) : colors_2.size() - 1;
+    int index2 = (SendMessage(hComboBand2, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand2, CB_GETCURSEL, 0, 0) : colors.size() - 1;
+    //int index3 = 0; // Default value
+    //if (isFiveBand) {
+    //    index3 = (SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) : colors.size() - 1;
+    //}
+    int index4 = (SendMessage(hComboBand4, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand4, CB_GETCURSEL, 0, 0) : colors.size() - 1;
+    int index5 = (SendMessage(hComboBand5, CB_GETCURSEL, 0, 0) < colors_3.size()) ? SendMessage(hComboBand5, CB_GETCURSEL, 0, 0) : colors_3.size() - 1;
+
+    std::vector<ResistorBand> bands;
+    bands.push_back(ResistorBand(colors_2[index1]));
+    bands.push_back(ResistorBand(colors[index2]));
+    /*if (isFiveBand) {
+        bands.push_back(ResistorBand(colors[index3]));
+    }*/
+    bands.push_back(ResistorBand(colors[index4]));
+    bands.push_back(ResistorBand(colors_3[index5]));
+    
+    int x = 50, y = 300, bandWidth = 20, bandHeight = 80, spacing = 10;
+    DrawResistor(hdc, bands, x, y, bandWidth, bandHeight, spacing);
+}
+
+void DrawResistor5(HDC hdc)
+{
+    int index1 = (SendMessage(hComboBand1, CB_GETCURSEL, 0, 0) < colors_2.size()) ? SendMessage(hComboBand1, CB_GETCURSEL, 0, 0) : colors_2.size() - 1;
+    int index2 = (SendMessage(hComboBand2, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand2, CB_GETCURSEL, 0, 0) : colors.size() - 1;
+    int index3 = (SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) : colors.size() - 1;
+    int index4 = (SendMessage(hComboBand4, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand4, CB_GETCURSEL, 0, 0) : colors.size() - 1;
+    int index5 = (SendMessage(hComboBand5, CB_GETCURSEL, 0, 0) < colors_3.size()) ? SendMessage(hComboBand5, CB_GETCURSEL, 0, 0) : colors_3.size() - 1;
+
+    std::vector<ResistorBand> bands;
+    bands.push_back(ResistorBand(colors_2[index1]));
+    bands.push_back(ResistorBand(colors[index2]));
+    bands.push_back(ResistorBand(colors[index3]));
+    bands.push_back(ResistorBand(colors[index4]));
+    bands.push_back(ResistorBand(colors_3[index5]));
+
+    int x = 50, y = 300, bandWidth = 20, bandHeight = 80, spacing = 10;
+    DrawResistor(hdc, bands, x, y, bandWidth, bandHeight, spacing);
+}
+
+void ToggleBands(bool fiveBand)
+{
+    isFiveBand = fiveBand;
+    UpdateComboBoxVisibility();
 }
 
 void HandleComboBoxChange(HWND hComboBox)
@@ -451,8 +475,125 @@ void InitializeBands()
     FillComboBox_accuracy(hComboBand5);
 }
 
+void (*FillComboBoxMethod1)(HWND) = FillComboBox_1m;
+void (*FillComboBoxMethod2)(HWND) = FillComboBox_2_3m;
+
+void CreateControls(HWND hWnd)
+{
+    // Creating UI controls with positioning
+
+    int margin = 10;
+    int labelWidth = 100;
+    int comboWidth = 150;
+    int height = 25;
+    int top = margin;
+    int left = margin;
+
+    hFourBandRadio = CreateWindow(L"BUTTON", L"4 кольца", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_RADIOBUTTON,
+        left, top, labelWidth, height, hWnd, (HMENU)ID_FOURBANDRADIO, hInst, NULL);
+    SendMessage(hFourBandRadio, BM_SETDONTCLICK, BST_CHECKED, 0);
+
+    left += labelWidth + margin;
+
+    hFiveBandRadio = CreateWindow(L"BUTTON", L"5 колец", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_RADIOBUTTON,
+        left, top, labelWidth, height, hWnd, (HMENU)ID_FIVEBANDRADIO, hInst, NULL);
+
+    left = margin;
+    top += height + margin;
+
+    hLabelBand1 = CreateWindow(L"STATIC", L"Номинал:", WS_VISIBLE | WS_CHILD,
+        left, top, labelWidth, height, hWnd, NULL, hInst, NULL);
+
+    left += labelWidth + margin;
+
+    hComboBand1 = CreateWindow(L"COMBOBOX", NULL, CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+        left, top, comboWidth, height * 10, hWnd, (HMENU)IDC_COMBO1, hInst, NULL);
+   // FillComboBox_1m(hComboBand1);
+
+   
+
+    left = margin;
+    top += height + margin;
+
+    hLabelBand2 = CreateWindow(L"STATIC", L"Номинал:", WS_VISIBLE | WS_CHILD,
+        left, top, labelWidth, height, hWnd, NULL, hInst, NULL);
+
+    left += labelWidth + margin;
+
+    hComboBand2 = CreateWindow(L"COMBOBOX", NULL, CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+        left, top, comboWidth, height * 10, hWnd, (HMENU)IDC_COMBO2, hInst, NULL);
+    // FillComboBox_2_3m(hComboBand2);
+    
+
+    left = margin;
+    top += height + margin;
+    
+        hLabelBand3 = CreateWindow(L"STATIC", L"Номинал:", WS_VISIBLE | WS_CHILD,
+            left, top, labelWidth, height, hWnd, NULL, hInst, NULL);
+
+        left += labelWidth + margin;
 
 
+        hComboBand3 = CreateWindow(L"COMBOBOX", NULL, CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+            left, top, comboWidth, height * 10, hWnd, (HMENU)IDC_COMBO3, hInst, NULL);
+        UpdateComboBoxVisibility();
+        // FillComboBox_2_3m(hComboBand3);
+
+        left = margin;
+        top += height + margin;
+    
+    hLabelBand4 = CreateWindow(L"STATIC", L"Множитель:", WS_VISIBLE | WS_CHILD,
+        left, top, labelWidth, height, hWnd, NULL, hInst, NULL);
+
+    left += labelWidth + margin;
+
+    hComboBand4 = CreateWindow(L"COMBOBOX", NULL, CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+        left, top, comboWidth, height * 10, hWnd, (HMENU)IDC_COMBO4, hInst, NULL);
+
+    // FillComboBox(hComboBand4);
+
+    left = margin;
+    top += height + margin;
+
+    hLabelBand5 = CreateWindow(L"STATIC", L"Точность:", WS_VISIBLE | WS_CHILD,
+        left, top, labelWidth, height, hWnd, NULL, hInst, NULL);
+
+    left += labelWidth + margin;
+
+    hComboBand5 = CreateWindow(L"COMBOBOX", NULL, CBS_DROPDOWNLIST | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+        left, top, comboWidth, height * 10, hWnd, (HMENU)IDC_COMBO5, hInst, NULL);
+
+    // FillComboBox_accuracy(hComboBand5);
+
+    left = margin;
+    top += height + margin;
+
+    /*hButton = CreateWindow(L"BUTTON", L"Calculate", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+        left, top, labelWidth, height, hWnd, (HMENU)IDC_BUTTON, hInst, NULL);*/
+
+    left += labelWidth + margin;
+
+    hResultText = CreateWindow(L"STATIC", L"", WS_VISIBLE | WS_CHILD,
+        left, top, comboWidth * 2, height, hWnd, NULL, hInst, NULL);
+
+    FillComboBoxMethod1(hComboBand1);
+    FillComboBoxMethod2(hComboBand2);
+    if (isFiveBand) {
+        FillComboBoxMethod2(hComboBand3);
+    }
+    FillComboBox(hComboBand4);
+    FillComboBox_accuracy(hComboBand5);
+}
+
+
+void OnComboBoxChange(HWND hWnd)
+{
+    // Пересчитать сопротивление
+    RecalculateResistance();
+
+    // Обновить отображение резистора
+    InvalidateRect(hWnd, NULL, TRUE);
+}
 
 
 
@@ -461,95 +602,63 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_CREATE:
-    {
-        hComboBand1 = CreateWindow(L"COMBOBOX", NULL, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE, 10, 140, 100, 200, hWnd, NULL, hInst, NULL);
-        hComboBand2 = CreateWindow(L"COMBOBOX", NULL, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE, 120, 140, 100, 200, hWnd, NULL, hInst, NULL);
-        hComboBand3 = CreateWindow(L"COMBOBOX", NULL, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE, 230, 140, 100, 200, hWnd, NULL, hInst, NULL);
-        hComboBand4 = CreateWindow(L"COMBOBOX", NULL, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE, 340, 140, 100, 200, hWnd, NULL, hInst, NULL);
-        hComboBand5 = CreateWindow(L"COMBOBOX", NULL, CBS_DROPDOWNLIST | WS_CHILD | WS_VISIBLE, 450, 140, 100, 200, hWnd, NULL, hInst, NULL);
-
-        hButton = CreateWindow(L"BUTTON", L"Рассчитать", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 560, 140, 100, 25, hWnd, (HMENU)1, hInst, NULL);
-        hResultText = CreateWindow(L"STATIC", L"", WS_CHILD | WS_VISIBLE, 10, 50, 300, 25, hWnd, NULL, hInst, NULL);
-
-        hFourBandRadio = CreateWindow(L"BUTTON", L"4 полосы", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON, 10, 10, 100, 25, hWnd, (HMENU)2, hInst, NULL);
-        hFiveBandRadio = CreateWindow(L"BUTTON", L"5 полос", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON, 120, 10, 100, 25, hWnd, (HMENU)3, hInst, NULL);
-
-        SendMessage(hFourBandRadio, BM_SETCHECK, BST_CHECKED, 0);
-        isFiveBand = false;
-
-        hLabelBand1 = CreateWindow(L"STATIC", L"1-я полоса", WS_CHILD | WS_VISIBLE, 10, 110, 100, 25, hWnd, NULL, hInst, NULL);
-        hLabelBand2 = CreateWindow(L"STATIC", L"2-я полоса", WS_CHILD | WS_VISIBLE, 120, 110, 100, 25, hWnd, NULL, hInst, NULL);
-        hLabelBand3 = CreateWindow(L"STATIC", L"3-я полоса", WS_CHILD | WS_VISIBLE, 230, 110, 100, 25, hWnd, NULL, hInst, NULL);
-        hLabelBand4 = CreateWindow(L"STATIC", L"Множитель", WS_CHILD | WS_VISIBLE, 340, 110, 100, 25, hWnd, NULL, hInst, NULL);
-        hLabelBand5 = CreateWindow(L"STATIC", L"Допуск", WS_CHILD | WS_VISIBLE, 450, 110, 100, 25, hWnd, NULL, hInst, NULL);
-
-        UpdateComboBoxVisibility();
-
-        // Заполняем комбобоксы
-        InitializeBands();
-
-        // Подписываемся на изменение выбранного элемента в комбобоксах
-        SendMessage(hComboBand1, CB_SETCURSEL, 0, 0);
-        SendMessage(hComboBand2, CB_SETCURSEL, 0, 0);
-        SendMessage(hComboBand4, CB_SETCURSEL, 0, 0);
-        SendMessage(hComboBand5, CB_SETCURSEL, 0, 0);
-
-        SetComboBoxColor(hComboBand1);
-        SetComboBoxColor(hComboBand2);
-        SetComboBoxColor(hComboBand4);
-        SetComboBoxColor(hComboBand5);
-
-        if (isFiveBand) {
-            SetComboBoxColor(hComboBand3);
-        }
-
-        RecalculateResistance();
-    }
-    break;
-    case WM_COMMAND:
-    {
-        int wmId = LOWORD(wParam);
-        // Разобрать выбор в меню:
-        switch (wmId)
-        {
-        case 1:
-            RecalculateResistance();
-            break;
-        case 2:
-            isFiveBand = false;
-            UpdateComboBoxVisibility();
-            InitializeBands();
-            RecalculateResistance();
-            break;
-        case 3:
-            isFiveBand = true;
-            UpdateComboBoxVisibility();
-            InitializeBands();
-            RecalculateResistance();
-            break;
-        case IDM_ABOUT:
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-            break;
-        case IDM_EXIT:
-            DestroyWindow(hWnd);
-            break;
-        default:
-            return DefWindowProc(hWnd, message, wParam, lParam);
-        }
-    }
-    break;
+        CreateControls(hWnd);
+        break;
+    
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
-
-        RECT rect;
-        GetClientRect(hWnd, &rect);
-        DrawResistor(hdc, rect);
-
+        if (isFiveBand) 
+            DrawResistor5(hdc);
+        else
+            DrawResistor(hdc);
         EndPaint(hWnd, &ps);
     }
     break;
+
+    case WM_COMMAND:
+        switch (LOWORD(wParam)) {
+        case ID_FOURBANDRADIO:
+            isFiveBand = false;
+            UpdateComboBoxVisibility();
+            
+            InvalidateRect(hWnd, NULL, TRUE);
+            break;
+        case ID_FIVEBANDRADIO:
+            isFiveBand = true;
+            
+            if (isFiveBand && hComboBand3) {
+                // ShowWindow(hComboBand3, SW_SHOW); // Показать комбобокс только для 5 кольцевого резистора
+                UpdateComboBoxVisibility();
+            }
+            else if (!isFiveBand && hComboBand3) {
+                // ShowWindow(hComboBand3, SW_HIDE); // Скрыть комбобокс для 4 кольцевого резистора
+                UpdateComboBoxVisibility();
+            }
+            InvalidateRect(hWnd, NULL, TRUE);
+            break;
+        }
+            if (HIWORD(wParam) == CBN_SELCHANGE)
+            {
+                switch (LOWORD(wParam))
+                {
+                case IDC_COMBO1:
+                case IDC_COMBO2:
+                case IDC_COMBO3:
+                case IDC_COMBO4:
+                case IDC_COMBO5:
+                    OnComboBoxChange(hWnd);
+                    break;
+                }
+            }
+            else if (LOWORD(wParam) == IDC_BUTTON)
+            {
+                RecalculateResistance();
+            }
+            
+            break;
+        
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
