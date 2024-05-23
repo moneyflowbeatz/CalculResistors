@@ -496,13 +496,13 @@ void CreateControls(HWND hWnd)
     int top = margin;
     int left = margin;
 
-    hFourBandRadio = CreateWindow(L"BUTTON", L"4 кольца", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_RADIOBUTTON,
+    hFourBandRadio = CreateWindow(L"BUTTON", L"4 кольца", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON,
         left, top, labelWidth, height, hWnd, (HMENU)ID_FOURBANDRADIO, hInst, NULL);
-    SendMessage(hFourBandRadio, BM_SETDONTCLICK, BST_CHECKED, 0);
+    SendMessage(hFourBandRadio, BM_SETCHECK, BST_CHECKED, 0);
 
     left += labelWidth + margin;
 
-    hFiveBandRadio = CreateWindow(L"BUTTON", L"5 колец", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_RADIOBUTTON,
+    hFiveBandRadio = CreateWindow(L"BUTTON", L"5 колец", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTORADIOBUTTON,
         left, top, labelWidth, height, hWnd, (HMENU)ID_FIVEBANDRADIO, hInst, NULL);
 
     left = margin;
