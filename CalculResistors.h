@@ -6,5 +6,7 @@
 #include <cmath>
 #include <CommCtrl.h>
 #include <algorithm>
-
+#include <iomanip>
+#include <conio.h>
+#include <sstream>
 

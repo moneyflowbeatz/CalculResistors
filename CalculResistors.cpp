@@ -22,20 +22,22 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 std::vector<std::wstring> colours = {L"Black", L"Brown", L"Red", L"Orange", L"Yellow", L"Green", L"Blue", L"Violet", L"Gray", L"White", L"Gold", L"Silver" };
 std::vector<int> colorVal = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -2 };
+std::vector<int> colorVal_1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+std::vector<int> colorVal_2 = { 1, 2, 5, 6, 7, 8, -1, 2 };
 
 std::vector<COLORREF> colors = {
-    RGB(0, 0, 0),         // Black
-    RGB(139, 69, 19),     // Brown
-    RGB(255, 0, 0),       // Red
-    RGB(255, 165, 0),     // Orange
-    RGB(255, 255, 0),     // Yellow
-    RGB(0, 128, 0),       // Green
-    RGB(0, 0, 255),       // Blue
-    RGB(128, 0, 128),     // Violet
-    RGB(128, 128, 128),   // Gray
-    RGB(255, 255, 255),   // White
-    RGB(255, 215, 0),     // Gold
-    RGB(192, 192, 192)    // Silver
+    RGB(0, 0, 0),         // Black 0
+    RGB(139, 69, 19),     // Brown 1
+    RGB(255, 0, 0),       // Red 2 
+    RGB(255, 165, 0),     // Orange 3
+    RGB(255, 255, 0),     // Yellow 4 
+    RGB(0, 128, 0),       // Green 5 
+    RGB(0, 0, 255),       // Blue 6
+    RGB(128, 0, 128),     // Violet 7
+    RGB(128, 128, 128),   // Gray 8
+    RGB(255, 255, 255),   // White 9
+    RGB(255, 215, 0),     // Gold -1
+    RGB(192, 192, 192)    // Silver -2
 };
 
 std::vector<COLORREF> colors_2 = {
@@ -347,50 +349,58 @@ void UpdateComboBoxVisibility()
 
 void RecalculateResistance()
 {
-    int val1 = colorVal[SendMessage(hComboBand1, CB_GETCURSEL, 0, 0)];
+    // Получение значений цвета для каждой полосы
+    int val1 = colorVal_1[SendMessage(hComboBand1, CB_GETCURSEL, 0, 0)];
     int val2 = colorVal[SendMessage(hComboBand2, CB_GETCURSEL, 0, 0)];
     int val3 = isFiveBand ? colorVal[SendMessage(hComboBand3, CB_GETCURSEL, 0, 0)] : 0;
     int multiplier = colorVal[SendMessage(hComboBand4, CB_GETCURSEL, 0, 0)];
     int band5 = SendMessage(hComboBand5, CB_GETCURSEL, 0, 0);
     std::wstring tolerance;
 
+    // Определение допуска по цвету пятой полосы
     switch (band5) {
-    case 0:
-        tolerance = L"1%"; // Коричневый
-        break;
-    case 1:
-        tolerance = L"2%"; // Красный
-        break;
-    case 2:
-        tolerance = L"0.5%"; // Зеленый
-        break;
-    case 3:
-        tolerance = L"0.25%"; // Синий
-        break;
-    case 4:
-        tolerance = L"0.1%"; // Фиолетовый
-        break;
-    case 5:
-        tolerance = L"0.05%"; // Серый
-        break;
-    case 6:
-        tolerance = L"5%"; // Золото
-        break;
-    case 7:
-        tolerance = L"10%"; // Серебро
-        break;
-    default:
-        tolerance = L"";
-        break;
+    case 0: tolerance = L"1%"; break; // Коричневый
+    case 1: tolerance = L"2%"; break; // Красный
+    case 2: tolerance = L"0.5%"; break; // Зеленый
+    case 3: tolerance = L"0.25%"; break; // Синий
+    case 4: tolerance = L"0.1%"; break; // Фиолетовый
+    case 5: tolerance = L"0.05%"; break; // Серый
+    case 6: tolerance = L"5%"; break; // Золото
+    case 7: tolerance = L"10%"; break; // Серебро
+    default: tolerance = L""; break;
     }
 
-    
-    double resistance = isFiveBand
-        ? (val1 * 100 + val2 * 10 + val3) * std::pow(10, multiplier)
-        : (val1 * 10 + val2) * std::pow(10, multiplier);
+    // Расчет сопротивления
+    double resistance = 0.0;
+    if (isFiveBand) {
+        resistance = (val1 * 100 + val2 * 10 + val3) * std::pow(10, multiplier);
+    }
+    else {
+        resistance = (val1 * 10 + val2) * std::pow(10, multiplier);
+    }
 
-    std::wstring result = L"Сопротивление: " + std::to_wstring(resistance) + L" Ом ± " + tolerance;
+    // Форматирование результата
+    std::wstring unit = L" Ом";
+    if (resistance >= 1e9) {
+        resistance /= 1e9;
+        unit = L" ГОм";
+    }
+    else if (resistance >= 1e6) {
+        resistance /= 1e6;
+        unit = L" МОм";
+    }
+    else if (resistance >= 1e3) {
+        resistance /= 1e3;
+        unit = L" кОм";
+    }
+
+    // Формирование строки результата
+    std::wstringstream resultStream;
+    resultStream << std::fixed << std::setprecision(2) << resistance << unit << L" ± " << tolerance;
+    std::wstring result = L"Сопротивление: " + resultStream.str();
     SetWindowText(hResultText, result.c_str());
+
+    // Обновление отображения
     InvalidateRect(hResultText, NULL, TRUE);
     InvalidateRect(hComboBand1, NULL, TRUE);
     InvalidateRect(hComboBand2, NULL, TRUE);
