@@ -419,19 +419,19 @@ void DrawResistor(HDC hdc)
 {
     int index1 = (SendMessage(hComboBand1, CB_GETCURSEL, 0, 0) < colors_2.size()) ? SendMessage(hComboBand1, CB_GETCURSEL, 0, 0) : colors_2.size() - 1;
     int index2 = (SendMessage(hComboBand2, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand2, CB_GETCURSEL, 0, 0) : colors.size() - 1;
-    //int index3 = 0; // Default value
-    //if (isFiveBand) {
-    //    index3 = (SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) : colors.size() - 1;
-    //}
+    int index3 = 0; // Default value
+    if (isFiveBand) {
+        index3 = (SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) : colors.size() - 1;
+    }
     int index4 = (SendMessage(hComboBand4, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand4, CB_GETCURSEL, 0, 0) : colors.size() - 1;
     int index5 = (SendMessage(hComboBand5, CB_GETCURSEL, 0, 0) < colors_3.size()) ? SendMessage(hComboBand5, CB_GETCURSEL, 0, 0) : colors_3.size() - 1;
 
     std::vector<ResistorBand> bands;
     bands.push_back(ResistorBand(colors_2[index1]));
     bands.push_back(ResistorBand(colors[index2]));
-    /*if (isFiveBand) {
+    if (isFiveBand) {
         bands.push_back(ResistorBand(colors[index3]));
-    }*/
+    }
     bands.push_back(ResistorBand(colors[index4]));
     bands.push_back(ResistorBand(colors_3[index5]));
     
@@ -477,10 +477,7 @@ void InitializeBands()
 {
     FillComboBox_1m(hComboBand1);
     FillComboBox_2_3m(hComboBand2);
-    if (isFiveBand)
-    {
-        FillComboBox_2_3m(hComboBand3);
-    }
+    FillComboBox_2_3m(hComboBand3);
     FillComboBox(hComboBand4);
     FillComboBox_accuracy(hComboBand5);
 }
@@ -637,15 +634,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         case ID_FIVEBANDRADIO:
             isFiveBand = true;
-            
-            if (isFiveBand && hComboBand3) {
-                // ShowWindow(hComboBand3, SW_SHOW); // Показать комбобокс только для 5 кольцевого резистора
-                UpdateComboBoxVisibility();
-            }
-            else if (!isFiveBand && hComboBand3) {
-                // ShowWindow(hComboBand3, SW_HIDE); // Скрыть комбобокс для 4 кольцевого резистора
-                UpdateComboBoxVisibility();
-            }
+            UpdateComboBoxVisibility();
+            FillComboBoxMethod2(hComboBand3);
             InvalidateRect(hWnd, NULL, TRUE);
             break;
         }
