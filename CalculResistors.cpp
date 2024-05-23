@@ -435,7 +435,7 @@ void DrawResistor(HDC hdc)
     bands.push_back(ResistorBand(colors[index4]));
     bands.push_back(ResistorBand(colors_3[index5]));
     
-    int x = 50, y = 300, bandWidth = 20, bandHeight = 80, spacing = 10;
+    int x = 150, y = 300, bandWidth = 20, bandHeight = 80, spacing = 10;
     DrawResistor(hdc, bands, x, y, bandWidth, bandHeight, spacing);
 }
 
@@ -454,7 +454,7 @@ void DrawResistor5(HDC hdc)
     bands.push_back(ResistorBand(colors[index4]));
     bands.push_back(ResistorBand(colors_3[index5]));
 
-    int x = 50, y = 300, bandWidth = 20, bandHeight = 80, spacing = 10;
+    int x = 150, y = 300, bandWidth = 20, bandHeight = 80, spacing = 10;
     DrawResistor(hdc, bands, x, y, bandWidth, bandHeight, spacing);
 }
 
