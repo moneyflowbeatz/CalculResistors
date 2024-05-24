@@ -3,7 +3,9 @@
 
 #include "framework.h"
 #include "CalculResistors.h"
-
+#define NOMINMAX
+#undef min
+#undef max
 #define MAX_LOADSTRING 100
 // Глобальные переменные:
 HINSTANCE hInst;                                // текущий экземпляр
@@ -24,6 +26,9 @@ std::vector<std::wstring> colours = {L"Black", L"Brown", L"Red", L"Orange", L"Ye
 std::vector<int> colorVal = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -2 };
 std::vector<int> colorVal_1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 std::vector<int> colorVal_2 = { 1, 2, 5, 6, 7, 8, -1, 2 };
+const std::vector<double> E12 = { 1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2 };
+const std::vector<double> E24 = { 1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2.0, 2.2, 2.4, 2.7, 3.0, 3.3, 3.6, 3.9, 4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5, 8.2, 9.1 };
+
 
 std::vector<COLORREF> colors = {
     RGB(0, 0, 0),         // Black 0
@@ -284,6 +289,34 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //    SetWindowSubclass(hComboBox, ComboBoxProc, 0, 0);
 //}
 
+double findNearestValue(const std::vector<double>& series, double value) {
+    auto it = std::lower_bound(series.begin(), series.end(), value);
+    if (it == series.end()) {
+        return series.back();
+    }
+    else if (it == series.begin()) {
+        return *it;
+    }
+    else {
+        double lower = *(it - 1);
+        double upper = *it;
+        return (std::abs(value - lower) < std::abs(value - upper)) ? lower : upper;
+    }
+}
+
+std::wstring determineSeries(double resistance, const std::vector<std::vector<double>>& seriesList, const std::vector<std::wstring>& seriesNames) {
+    double minDifference = std::numeric_limits<double>::max();
+    std::wstring bestSeries;
+    for (size_t i = 0; i < seriesList.size(); ++i) {
+        double nearestValue = findNearestValue(seriesList[i], resistance);
+        double difference = std::abs(nearestValue - resistance);
+        if (difference < minDifference) {
+            minDifference = difference;
+            bestSeries = seriesNames[i];
+        }
+    }
+    return bestSeries;
+}
 
 void FillComboBox(HWND hComboBox)
 {
@@ -347,9 +380,10 @@ void UpdateComboBoxVisibility()
     ShowWindow(hComboBand3, isFiveBand ? SW_SHOW : SW_HIDE);
 }
 
+
+
 void RecalculateResistance()
 {
-    // Получение значений цвета для каждой полосы
     int val1 = colorVal_1[SendMessage(hComboBand1, CB_GETCURSEL, 0, 0)];
     int val2 = colorVal[SendMessage(hComboBand2, CB_GETCURSEL, 0, 0)];
     int val3 = isFiveBand ? colorVal[SendMessage(hComboBand3, CB_GETCURSEL, 0, 0)] : 0;
@@ -357,7 +391,6 @@ void RecalculateResistance()
     int band5 = SendMessage(hComboBand5, CB_GETCURSEL, 0, 0);
     std::wstring tolerance;
 
-    // Определение допуска по цвету пятой полосы
     switch (band5) {
     case 0: tolerance = L"1%"; break; // Коричневый
     case 1: tolerance = L"2%"; break; // Красный
@@ -370,7 +403,6 @@ void RecalculateResistance()
     default: tolerance = L""; break;
     }
 
-    // Расчет сопротивления
     double resistance = 0.0;
     if (isFiveBand) {
         resistance = (val1 * 100 + val2 * 10 + val3) * std::pow(10, multiplier);
@@ -379,7 +411,6 @@ void RecalculateResistance()
         resistance = (val1 * 10 + val2) * std::pow(10, multiplier);
     }
 
-    // Форматирование результата
     std::wstring unit = L" Ом";
     if (resistance >= 1e9) {
         resistance /= 1e9;
@@ -394,13 +425,16 @@ void RecalculateResistance()
         unit = L" кОм";
     }
 
-    // Формирование строки результата
+    std::vector<std::vector<double>> seriesList = { E12, E24 };
+    std::vector<std::wstring> seriesNames = { L"E12", L"E24" };
+    std::wstring bestSeries = determineSeries(resistance, seriesList, seriesNames);
+
     std::wstringstream resultStream;
     resultStream << std::fixed << std::setprecision(2) << resistance << unit << L" ± " << tolerance;
+    resultStream << L"\nРяд номиналов: " << bestSeries;
     std::wstring result = L"Сопротивление: " + resultStream.str();
     SetWindowText(hResultText, result.c_str());
 
-    // Обновление отображения
     InvalidateRect(hResultText, NULL, TRUE);
     InvalidateRect(hComboBand1, NULL, TRUE);
     InvalidateRect(hComboBand2, NULL, TRUE);
@@ -419,7 +453,7 @@ void DrawResistor(HDC hdc)
 {
     int index1 = (SendMessage(hComboBand1, CB_GETCURSEL, 0, 0) < colors_2.size()) ? SendMessage(hComboBand1, CB_GETCURSEL, 0, 0) : colors_2.size() - 1;
     int index2 = (SendMessage(hComboBand2, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand2, CB_GETCURSEL, 0, 0) : colors.size() - 1;
-    int index3 = 0; // Default value
+    int index3 = 0; 
     if (isFiveBand) {
         index3 = (SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) < colors.size()) ? SendMessage(hComboBand3, CB_GETCURSEL, 0, 0) : colors.size() - 1;
     }
@@ -469,7 +503,7 @@ void HandleComboBoxChange(HWND hComboBox)
     if (hComboBox == hComboBand1 || hComboBox == hComboBand2 || hComboBox == hComboBand3 || hComboBox == hComboBand4 || hComboBox == hComboBand5)
     {
         RecalculateResistance();
-        InvalidateRect(GetParent(hComboBox), NULL, TRUE); // Обновление окна при изменении значений
+        InvalidateRect(GetParent(hComboBox), NULL, TRUE); 
     }
 }
 
@@ -487,7 +521,6 @@ void (*FillComboBoxMethod2)(HWND) = FillComboBox_2_3m;
 
 void CreateControls(HWND hWnd)
 {
-    // Creating UI controls with positioning
 
     int margin = 10;
     int labelWidth = 100;
@@ -581,7 +614,7 @@ void CreateControls(HWND hWnd)
     left += labelWidth + margin;
 
     hResultText = CreateWindow(L"STATIC", L"", WS_VISIBLE | WS_CHILD,
-        left, top, comboWidth * 2, height, hWnd, NULL, hInst, NULL);
+        left, top, comboWidth * 2, height + 25, hWnd, NULL, hInst, NULL);
 
     FillComboBoxMethod1(hComboBand1);
     FillComboBoxMethod2(hComboBand2);
@@ -595,10 +628,8 @@ void CreateControls(HWND hWnd)
 
 void OnComboBoxChange(HWND hWnd)
 {
-    // Пересчитать сопротивление
     RecalculateResistance();
 
-    // Обновить отображение резистора
     InvalidateRect(hWnd, NULL, TRUE);
 }
 
@@ -621,7 +652,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         
 
-        HBITMAP hBitmap = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP3)); // IDB_BITMAP1 - замените на ваш ресурсный идентификатор
+        HBITMAP hBitmap = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP3)); 
 
         if (hBitmap != NULL)
         {
@@ -631,7 +662,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             BITMAP bitmap;
             GetObject(hBitmap, sizeof(BITMAP), &bitmap);
 
-            // Отображение изображения
             BitBlt(hdc, 0, 250, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
 
             DeleteDC(hdcMem);
@@ -639,7 +669,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         else
         {
-            // Обработка ошибки загрузки
             MessageBox(hWnd, L"Failed to load image", L"Error", MB_OK | MB_ICONERROR);
         }
 

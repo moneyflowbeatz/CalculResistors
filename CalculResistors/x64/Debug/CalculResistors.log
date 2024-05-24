@@ -1,24 +1,24 @@
 ﻿  CalculResistors.cpp
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(357,15): warning C4244: инициализация: преобразование "LRESULT" в "int", возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(414,30): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(420,64): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(420,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(421,64): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(421,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(424,64): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(424,64): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(426,64): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(426,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(427,64): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(427,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(444,64): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(444,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(445,64): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(445,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(446,64): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(446,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(447,64): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(447,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(448,64): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(448,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(391,15): warning C4244: инициализация: преобразование "LRESULT" в "int", возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(448,30): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(454,64): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(454,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(455,64): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(455,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(458,64): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(458,64): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(460,64): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(460,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(461,64): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(461,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(478,64): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(478,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(479,64): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(479,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(480,64): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(480,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(481,64): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(481,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(482,64): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Dev\Projects\CalculateResistors\CalculResistors.cpp(482,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
   CalculResistors.vcxproj -> D:\Dev\Projects\CalculateResistors\x64\Debug\CalculResistors.exe
