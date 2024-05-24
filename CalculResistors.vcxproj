@@ -140,7 +140,10 @@
     <ResourceCompile Include="CalculResistors.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="bitmap1.bmp" />
     <Image Include="CalculResistors.ico" />
+    <Image Include="res\bitmap3.bmp" />
+    <Image Include="res\resistor.bmp" />
     <Image Include="small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -45,5 +45,14 @@
     <Image Include="CalculResistors.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+    <Image Include="res\resistor.bmp">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="res\bitmap3.bmp">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="bitmap1.bmp">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

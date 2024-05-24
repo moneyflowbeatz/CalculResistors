@@ -435,7 +435,7 @@ void DrawResistor(HDC hdc)
     bands.push_back(ResistorBand(colors[index4]));
     bands.push_back(ResistorBand(colors_3[index5]));
     
-    int x = 150, y = 300, bandWidth = 20, bandHeight = 80, spacing = 10;
+    int x = 240, y = 298, bandWidth = 20, bandHeight = 103, spacing = 15;
     DrawResistor(hdc, bands, x, y, bandWidth, bandHeight, spacing);
 }
 
@@ -454,7 +454,7 @@ void DrawResistor5(HDC hdc)
     bands.push_back(ResistorBand(colors[index4]));
     bands.push_back(ResistorBand(colors_3[index5]));
 
-    int x = 150, y = 300, bandWidth = 20, bandHeight = 80, spacing = 10;
+    int x = 220, y = 298, bandWidth = 20, bandHeight = 103, spacing = 15;
     DrawResistor(hdc, bands, x, y, bandWidth, bandHeight, spacing);
 }
 
@@ -604,6 +604,7 @@ void OnComboBoxChange(HWND hWnd)
 
 
 
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -616,6 +617,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
+        const wchar_t* imagePath = L"D:\\Dev\\Projects\\CalculateResistors\\res\\resistor.bmp";
+
+        
+
+        HBITMAP hBitmap = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP3)); // IDB_BITMAP1 - замените на ваш ресурсный идентификатор
+
+        if (hBitmap != NULL)
+        {
+            HDC hdcMem = CreateCompatibleDC(hdc);
+            SelectObject(hdcMem, hBitmap);
+
+            BITMAP bitmap;
+            GetObject(hBitmap, sizeof(BITMAP), &bitmap);
+
+            // Отображение изображения
+            BitBlt(hdc, 0, 250, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
+
+            DeleteDC(hdcMem);
+            DeleteObject(hBitmap);
+        }
+        else
+        {
+            // Обработка ошибки загрузки
+            MessageBox(hWnd, L"Failed to load image", L"Error", MB_OK | MB_ICONERROR);
+        }
+
         if (isFiveBand) 
             DrawResistor5(hdc);
         else
