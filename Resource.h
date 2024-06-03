@@ -7,11 +7,9 @@
 #define IDD_CALCULRESISTORS_DIALOG      102
 #define ID_FIVEBANDRADIO                102
 #define IDS_APP_TITLE                   103
-#define IDD_ABOUTBOX                    103
 #define IDC_COMBO1                      103
 #define IDM_ABOUT                       104
 #define IDC_COMBO2                      104
-#define IDM_EXIT                        105
 #define IDC_COMBO3                      105
 #define IDC_COMBO4                      106
 #define IDI_CALCULRESISTORS             107

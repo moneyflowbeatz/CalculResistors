@@ -22,7 +22,7 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-std::vector<std::wstring> colours = {L"Black", L"Brown", L"Red", L"Orange", L"Yellow", L"Green", L"Blue", L"Violet", L"Gray", L"White", L"Gold", L"Silver" };
+std::vector<std::wstring> colours = {L"Чёрный", L"Коричневый", L"Красный", L"Оранжевый", L"Желтый", L"Зеленый", L"Синий", L"Фиолетовый", L"Серый", L"Белый", L"Золотой", L"Серебряный" };
 std::vector<int> colorVal = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -2 };
 std::vector<int> colorVal_1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 std::vector<int> colorVal_2 = { 1, 2, 5, 6, 7, 8, -1, 2 };
@@ -469,7 +469,7 @@ void DrawResistor(HDC hdc)
     bands.push_back(ResistorBand(colors[index4]));
     bands.push_back(ResistorBand(colors_3[index5]));
     
-    int x = 240, y = 298, bandWidth = 20, bandHeight = 103, spacing = 15;
+    int x = 240, y = 398, bandWidth = 20, bandHeight = 103, spacing = 15;
     DrawResistor(hdc, bands, x, y, bandWidth, bandHeight, spacing);
 }
 
@@ -488,7 +488,7 @@ void DrawResistor5(HDC hdc)
     bands.push_back(ResistorBand(colors[index4]));
     bands.push_back(ResistorBand(colors_3[index5]));
 
-    int x = 220, y = 298, bandWidth = 20, bandHeight = 103, spacing = 15;
+    int x = 220, y = 398, bandWidth = 20, bandHeight = 103, spacing = 15;
     DrawResistor(hdc, bands, x, y, bandWidth, bandHeight, spacing);
 }
 
@@ -614,7 +614,7 @@ void CreateControls(HWND hWnd)
     left += labelWidth + margin;
 
     hResultText = CreateWindow(L"STATIC", L"", WS_VISIBLE | WS_CHILD,
-        left, top, comboWidth * 2, height + 25, hWnd, NULL, hInst, NULL);
+        left, top + 100 , comboWidth * 2, height + 25, hWnd, NULL, hInst, NULL);
 
     FillComboBoxMethod1(hComboBand1);
     FillComboBoxMethod2(hComboBand2);
@@ -662,7 +662,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             BITMAP bitmap;
             GetObject(hBitmap, sizeof(BITMAP), &bitmap);
 
-            BitBlt(hdc, 0, 250, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
+            BitBlt(hdc, 0, 350, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
 
             DeleteDC(hdcMem);
             DeleteObject(hBitmap);
@@ -725,21 +725,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 // Обработчик сообщений для окна "О программе".
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    UNREFERENCED_PARAMETER(lParam);
-    switch (message)
-    {
-    case WM_INITDIALOG:
-        return (INT_PTR)TRUE;
-
-    case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
-        }
-        break;
-    }
-    return (INT_PTR)FALSE;
-}
+//INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+//{
+//    UNREFERENCED_PARAMETER(lParam);
+//    switch (message)
+//    {
+//    case WM_INITDIALOG:
+//        return (INT_PTR)TRUE;
+//
+//    case WM_COMMAND:
+//        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+//        {
+//            EndDialog(hDlg, LOWORD(wParam));
+//            return (INT_PTR)TRUE;
+//        }
+//        break;
+//    }
+//    return (INT_PTR)FALSE;
+//}

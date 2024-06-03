@@ -1,18 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Dev\\Projects\\CalculateResistors\\",
+  "WorkspaceRootPath": "D:\\Dev\\Projects\\CalculateResistors\\CalculateResistors\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|D:\\Dev\\Projects\\CalculateResistors\\CalculateResistors\\CalculResistors.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|solutionrelative:CalculResistors.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|D:\\Dev\\Projects\\CalculateResistors\\CalculateResistors\\CalculResistors.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|solutionrelative:CalculResistors.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.rc||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{CC2B09CA-B37B-4046-8232-D2F7CD576A8F}|CalculResistors.vcxproj|solutionrelative:CalculResistors.rc||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -29,42 +25,32 @@
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CalculResistors.rc",
-              "DocumentMoniker": "D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.rc",
-              "RelativeDocumentMoniker": "CalculResistors.rc",
-              "ToolTip": "D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.rc",
-              "RelativeToolTip": "CalculResistors.rc",
-              "ViewState": "AQIAAH4AAAAAAAAAAAD4v4sAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2024-05-24T13:26:59.793Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "CalculResistors.h",
-              "DocumentMoniker": "D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.h",
+              "DocumentMoniker": "D:\\Dev\\Projects\\CalculateResistors\\CalculateResistors\\CalculResistors.h",
               "RelativeDocumentMoniker": "CalculResistors.h",
-              "ToolTip": "D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.h",
+              "ToolTip": "D:\\Dev\\Projects\\CalculateResistors\\CalculateResistors\\CalculResistors.h",
               "RelativeToolTip": "CalculResistors.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAASAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-05-20T06:27:39.569Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-30T05:08:01.865Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "CalculResistors.cpp",
-              "DocumentMoniker": "D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.cpp",
+              "DocumentMoniker": "D:\\Dev\\Projects\\CalculateResistors\\CalculateResistors\\CalculResistors.cpp",
               "RelativeDocumentMoniker": "CalculResistors.cpp",
-              "ToolTip": "D:\\Dev\\Projects\\CalculateResistors\\CalculResistors.cpp",
+              "ToolTip": "D:\\Dev\\Projects\\CalculateResistors\\CalculateResistors\\CalculResistors.cpp",
               "RelativeToolTip": "CalculResistors.cpp",
-              "ViewState": "AQIAAKMBAAAAAAAAAAAAALcBAAAsAAAA",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAADcAAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-20T06:13:14.522Z",
+              "WhenOpened": "2024-05-30T04:45:12.533Z",
               "EditorCaption": ""
             }
           ]
